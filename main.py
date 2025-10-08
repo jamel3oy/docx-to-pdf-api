@@ -8,15 +8,24 @@ from docx2pdf import convert
 import uuid
 from typing import Optional
 
+# Environment Configuration
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = int(os.getenv("PORT", 8000))
+UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", "uploads"))
+OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "outputs"))
+API_TITLE = os.getenv("API_TITLE", "DOCX to PDF Converter")
+API_DESCRIPTION = os.getenv("API_DESCRIPTION", "API สำหรับแปลงไฟล์ DOCX เป็น PDF")
+API_VERSION = os.getenv("API_VERSION", "1.0.0")
+
 app = FastAPI(
-    title="DOCX to PDF Converter",
-    description="API สำหรับแปลงไฟล์ DOCX เป็น PDF",
-    version="1.0.0"
+    title=API_TITLE,
+    description=API_DESCRIPTION,
+    version=API_VERSION
 )
 
 # สร้างโฟลเดอร์สำหรับเก็บไฟล์ชั่วคราว
-UPLOAD_DIR = Path("uploads")
-OUTPUT_DIR = Path("outputs")
+# UPLOAD_DIR = Path("uploads")
+# OUTPUT_DIR = Path("outputs")
 
 # สร้างโฟลเดอร์หากยังไม่มี
 UPLOAD_DIR.mkdir(exist_ok=True)
@@ -128,4 +137,4 @@ async def cleanup_files():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host=HOST, port=PORT, reload=True)
